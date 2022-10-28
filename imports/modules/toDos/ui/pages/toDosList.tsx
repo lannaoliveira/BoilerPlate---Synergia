@@ -98,15 +98,23 @@ const ToDosList = (props: IToDosList) => {
     };
 
     const callEdit = (doc: IToDos) => {
-        if (doc.createdby === permiteUser) {
-            props.navigate(`/toDos/edit/${doc._id}`);
-        } else {
+        if (doc.situation === 'concluida') {
             showNotification({
                 type: 'warning',
                 title: 'Operação não realizada!',
-                description: `Você não tem permissão para editar essa tarefa! Apenas ${props.user.username} pode editar.`,
+                description: `Não é permitido editar tarefas concluidas. Caso necessario, reinicie a tarefa para editar.`,
             });
-            props.navigate(`/toDos/`);
+        } else {
+            if (doc.createdby === permiteUser) {
+                props.navigate(`/toDos/edit/${doc._id}`);
+            } else {
+                showNotification({
+                    type: 'warning',
+                    title: 'Operação não realizada!',
+                    description: `Você não tem permissão para editar essa tarefa! Apenas ${props.user.username} pode editar.`,
+                });
+                props.navigate(`/toDos/`);
+            }
         }
     };
 
