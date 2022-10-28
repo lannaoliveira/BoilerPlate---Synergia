@@ -20,7 +20,7 @@ const textFieldStyle = {
         height: '35.8px',
         margin: '0 32.1px 74.5px 1px',
         // fontFamily: 'PTSans',
-        fontSize: '20px',
+        fontSize: '18px',
         fontWeight: 'normal',
         fontStretch: 'normal',
         fontStyle: 'normal',

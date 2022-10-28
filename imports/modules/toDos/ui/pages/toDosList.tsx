@@ -1,7 +1,7 @@
 import React from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { toDosApi } from '../../api/toDosApi';
-import _ from 'lodash';
+import _, { stubTrue } from 'lodash';
 import Fab from '@mui/material/Fab';
 import TablePagination from '@mui/material/TablePagination';
 import { ReactiveVar } from 'meteor/reactive-var';
@@ -23,6 +23,7 @@ import { List, Box, IconButton } from '@mui/material';
 import { Task } from './toDosTask';
 import { Container } from '@material-ui/core';
 import { toDosStyle } from './style/toDosListStyle';
+import { ToDosDetailContainer } from './toDosDetail';
 
 interface IToDosList extends IDefaultListProps {
     remove: (doc: IToDos) => void;
@@ -55,19 +56,6 @@ const ToDosList = (props: IToDosList) => {
 
     const idToDos = shortid.generate();
     const permiteUser = props.user._id;
-
-    const handleChangePage = (
-        _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
-        newPage: number
-    ) => {
-        setPage(newPage + 1);
-    };
-
-    const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setPageSize(parseInt(event.target.value, 4));
-        setPage(1);
-    };
-
     const [text, setText] = React.useState(searchBy || '');
 
     const change = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -123,7 +111,10 @@ const ToDosList = (props: IToDosList) => {
     };
 
     const callView = (doc: IToDos) => {
-        props.navigate(`/toDos/view/${doc._id}`);
+        showModal && showModal({
+            modalOnClose: true,
+            component: () => { return <ToDosDetailContainer {...props} screenState={'view'} id={doc._id} /> }
+        });
     }
 
     const callAlterSituation = (doc: IToDos, movimento: string) => {
@@ -359,10 +350,6 @@ const ToDosList = (props: IToDosList) => {
 };
 
 export const subscribeConfig = new ReactiveVar<IConfigList & { viewComplexTable: boolean }>({
-    pageProperties: {
-        currentPage: 1,
-        pageSize: 12,
-    },
     sortProperties: { field: 'createdat', sortAscending: true },
     filter: {},
     searchBy: null,
@@ -391,16 +378,12 @@ export const ToDosListContainer = withTracker((props: IDefaultContainerProps) =>
 
     //Subscribe parameters
     const filter = { ...config.filter };
-    const limit = config.pageProperties.pageSize;
-    const skip = (config.pageProperties.currentPage - 1) * config.pageProperties.pageSize;
 
     //Collection Subscribe
     const subHandle = toDosApi.subscribe('toDosList', filter, {
-        sort,
-        limit,
-        skip,
+        sort
     });
-    const toDoss = subHandle?.ready() ? toDosApi.find(filter, { limit, skip }).fetch() : [];
+    const toDoss = subHandle?.ready() ? toDosApi.find(filter, {}).fetch() : [];
 
     return {
         toDoss,
@@ -469,19 +452,13 @@ export const ToDosListContainer = withTracker((props: IDefaultContainerProps) =>
         onSearch: (...params: any) => {
             onSearchToDosTyping && clearTimeout(onSearchToDosTyping);
             onSearchToDosTyping = setTimeout(() => {
-                config.pageProperties.currentPage = 1;
                 subscribeConfig.set(config);
                 toDosSearch.onSearch(...params);
             }, 1000);
         },
         total: subHandle ? subHandle.total : toDoss.length,
-        pageProperties: config.pageProperties,
         filter,
         sort,
-        setPage: (page = 1) => {
-            config.pageProperties.currentPage = page;
-            subscribeConfig.set(config);
-        },
         setFilter: (newFilter = {}) => {
             config.filter = { ...filter, ...newFilter };
             Object.keys(config.filter).forEach((key) => {
@@ -497,10 +474,6 @@ export const ToDosListContainer = withTracker((props: IDefaultContainerProps) =>
         },
         setSort: (sort = { field: 'createdat', sortAscending: true }) => {
             config.sortProperties = sort;
-            subscribeConfig.set(config);
-        },
-        setPageSize: (size = 12) => {
-            config.pageProperties.pageSize = size;
             subscribeConfig.set(config);
         },
     };

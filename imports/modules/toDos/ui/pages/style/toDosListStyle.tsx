@@ -83,7 +83,7 @@ export const toDosStyle = {
         display: 'flex',
         color: '#000000',
         backgroundColor: '#add8e6',
-        marginBottom: 1;
+        marginBottom: 1,
     },
     buttonCheckMobile: {
         width: 60,
@@ -99,5 +99,10 @@ export const toDosStyle = {
     boxBotoesEdicaoMobile: {
         justifyContent: 'center',
     },
+    modal: {
+        display: 'flex',
+        fontSize: '0.7rem',
+        textAlign: 'center',
+    }
 }
 

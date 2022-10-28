@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 
 export interface IPageLayout {
-    title: string;
+    title?: string;
     children?: React.ReactNode;
     actions?: object[];
     hiddenTitleBar?: boolean;
@@ -41,67 +41,69 @@ export const PageLayout = (props: IPageLayout) => {
                         backgroundColor: theme.palette.secondary.main,
                     }}
                 >
-                    <Container
-                        style={{
-                            backgroundColor: theme.palette.secondary.main,
-                            color: '#FFF',
-                            height: 45,
-                            display: 'flex',
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <div
+                    {title && (
+                        <Container
                             style={{
+                                backgroundColor: theme.palette.secondary.main,
+                                color: '#FFF',
+                                height: 45,
                                 display: 'flex',
                                 flexDirection: 'row',
+                                justifyContent: 'space-between',
                                 alignItems: 'center',
                             }}
                         >
-                            {(onBack || navigate) && (
-                                <Button
-                                    onClick={() => {
-                                        if (onBack) {
-                                            onBack();
-                                        } else {
-                                            navigate.goBack();
-                                        }
-                                    }}
-                                >
-                                    <ArrowBackIcon style={{ width: 20, height: 20 }} />
-                                </Button>
-                            )}
-                            <Typography
-                                component={'p'}
+                            <div
                                 style={{
                                     display: 'flex',
-                                    fontSize: '15px',
-                                    fontWeight: 'bold',
-                                    fontStretch: 'normal',
-                                    fontStyle: 'normal',
-                                    lineHeight: 1.2,
-                                    letterSpacing: '0.78px',
-                                    textAlign: 'center',
-                                    color: '#ffffff',
-                                    textTransform: 'none',
                                     flexDirection: 'row',
                                     alignItems: 'center',
                                 }}
                             >
-                                {title || 'SEM TITULO'}
-                            </Typography>
-                        </div>
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                alignItems: 'center',
-                            }}
-                        >
-                            {actions}
-                        </div>
-                    </Container>
+                                {(onBack || navigate) && (
+                                    <Button
+                                        onClick={() => {
+                                            if (onBack) {
+                                                onBack();
+                                            } else {
+                                                navigate.goBack();
+                                            }
+                                        }}
+                                    >
+                                        <ArrowBackIcon style={{ width: 20, height: 20 }} />
+                                    </Button>
+                                )}
+                                <Typography
+                                    component={'p'}
+                                    style={{
+                                        display: 'flex',
+                                        fontSize: '15px',
+                                        fontWeight: 'bold',
+                                        fontStretch: 'normal',
+                                        fontStyle: 'normal',
+                                        lineHeight: 1.2,
+                                        letterSpacing: '0.78px',
+                                        textAlign: 'center',
+                                        color: '#ffffff',
+                                        textTransform: 'none',
+                                        flexDirection: 'row',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    {title}
+                                </Typography>
+                            </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
+                                }}
+                            >
+                                {actions}
+                            </div>
+                        </Container>
+                    )}
                 </div>
             ) : null}
             <div

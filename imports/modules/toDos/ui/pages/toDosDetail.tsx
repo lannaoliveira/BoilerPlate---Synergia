@@ -15,7 +15,10 @@ import {
 } from '/imports/typings/BoilerplateDefaultTypings';
 import { useTheme } from '@mui/material/styles';
 import { showLoading } from '/imports/ui/components/Loading/Loading';
-import { FormControlLabel, MenuItem, Select, Switch, Typography } from '@mui/material';
+import { FormControlLabel, Switch } from '@mui/material';
+import { Typography } from '@material-ui/core';
+import { toDosStyle } from './style/toDosListStyle';
+import { Box } from '@mui/system';
 
 interface IToDosDetail extends IDefaultDetailProps {
     toDosDoc: IToDos;
@@ -47,7 +50,11 @@ const ToDosDetail = (props: IToDosDetail) => {
                         ? 'Editar Tarefa'
                         : 'Criar Tarefa'
             }
-            onBack={() => navigate('/toDos')}
+            onBack={
+                screenState === 'view'
+                    ? undefined
+                    : () => navigate('/toDos')
+            }
         >
 
             <SimpleForm
@@ -63,6 +70,8 @@ const ToDosDetail = (props: IToDosDetail) => {
                     <TextField key={'f1-nomeTarefaKEY'} placeholder="Título Tarefa"
                         name={'title'} />
                     <TextField
+                        multiline
+                        rows={3}
                         key={'f1descricaoTarefaKEY'}
                         placeholder="Descrição Tarefa"
                         name={'description'}
@@ -98,19 +107,21 @@ const ToDosDetail = (props: IToDosDetail) => {
                     }}
                 >
                     {!isPrintView ? (
-                        <Button
-                            key={'b1'}
-                            style={{ marginRight: 10 }}
-                            onClick={
-                                screenState === 'edit'
-                                    ? () => navigate(`/toDos/list`)
-                                    : () => navigate(`/toDos/list`)
-                            }
-                            color={'secondary'}
-                            variant="contained"
-                        >
-                            {screenState === 'view' ? 'Voltar' : 'Cancelar'}
-                        </Button>
+                        screenState != 'view' ? (
+                            <Button
+                                key={'b1'}
+                                style={{ marginRight: 10 }}
+                                onClick={() => navigate(`/toDos/list`)}
+                                color={'secondary'}
+                                variant="contained"
+                            >
+                                Cancelar
+                            </Button>
+                        ) : (
+                            <Box sx={toDosStyle.modal}>
+                                **Para sair do visualização, clique na área fora dela ou pressione a tecla ESC do seu teclado.
+                            </Box>
+                        )
                     ) : null}
 
                     {!isPrintView && screenState !== 'view' ? (
@@ -125,7 +136,7 @@ const ToDosDetail = (props: IToDosDetail) => {
                     ) : null}
                 </div>
             </SimpleForm>
-        </PageLayout>
+        </PageLayout >
     );
 };
 

@@ -41,9 +41,6 @@ export const Task = ({ task, userTask, onDeleteClick, onEditTarefa, callView, al
                                                     <Button sx={toDosStyle.buttonBegin} aria-label={'colocar tarefa em andamento'} onClick={() => { alterSituation(task, 'iniciar') }}>
                                                         Iniciar
                                                     </Button>
-                                                    <Button sx={toDosStyle.buttonCheck} aria-label={'concluir tarefa'} onClick={() => { alterSituation(task, 'concluir') }}>
-                                                        Concluir
-                                                    </Button>
                                                 </Box>
                                             )}
                                             {task.situation === 'andamento' && (
@@ -117,9 +114,6 @@ export const Task = ({ task, userTask, onDeleteClick, onEditTarefa, callView, al
                                             <Box>
                                                 <Button sx={toDosStyle.buttonBegin} onClick={() => { alterSituation(task, 'iniciar') }}>
                                                     Iniciar
-                                                </Button>
-                                                <Button sx={toDosStyle.buttonCheck} onClick={() => { alterSituation(task, 'concluir') }}>
-                                                    Concluir
                                                 </Button>
                                             </Box>
                                         )}
@@ -200,9 +194,6 @@ export const Task = ({ task, userTask, onDeleteClick, onEditTarefa, callView, al
                                                         <Button sx={toDosStyle.buttonBeginMobile} aria-label={'colocar tarefa em andamento'} onClick={() => { alterSituation(task, 'iniciar') }}>
                                                             Iniciar
                                                         </Button>
-                                                        <Button sx={toDosStyle.buttonCheckMobile} aria-label={'concluir tarefa'} onClick={() => { alterSituation(task, 'concluir') }}>
-                                                            Concluir
-                                                        </Button>
                                                     </Box>
                                                 )}
                                                 {task.situation === 'andamento' && (
@@ -277,9 +268,6 @@ export const Task = ({ task, userTask, onDeleteClick, onEditTarefa, callView, al
                                                 <Box>
                                                     <Button sx={toDosStyle.buttonBeginMobile} aria-label={'colocar tarefa em andamento'} onClick={() => { alterSituation(task, 'iniciar') }}>
                                                         Iniciar
-                                                    </Button>
-                                                    <Button sx={toDosStyle.buttonCheckMobile} aria-label={'concluir tarefa'} onClick={() => { alterSituation(task, 'concluir') }}>
-                                                        Concluir
                                                     </Button>
                                                 </Box>
                                             )}

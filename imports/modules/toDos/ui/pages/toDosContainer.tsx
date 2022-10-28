@@ -5,15 +5,13 @@ import { IDefaultContainerProps, IDefaultDetailProps } from '/imports/typings/Bo
 import { useParams } from 'react-router-dom';
 
 export default (props: IDefaultContainerProps) => {
-    const validState = ['view', 'edit', 'create'];
+    const validState = ['edit', 'create'];
     let { screenState, toDosId } = useParams();
     const state = screenState ? screenState : props.screenState;
     const id = toDosId ? toDosId : props.id;
 
     if (!!state && validState.indexOf(state) !== -1) {
-        if (state === 'view' && !!id) {
-                return <ToDosDetailContainer {...props} screenState={state} id={id} />;
-            } else if (state === 'edit' && !!id) {
+        if (state === 'edit' && !!id) {
                 return (
                     <ToDosDetailContainer
                         {...props}
